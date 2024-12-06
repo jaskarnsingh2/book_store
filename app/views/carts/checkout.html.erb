@@ -1,0 +1,63 @@
+<h1 class="text-center my-4">Checkout</h1>
+<div class="container">
+
+  <h3>Review Your Cart</h3>
+  
+  <!-- Display the cart contents -->
+  <% @cart.each do |item| %>
+    <% book = Book.find_by(id: item["book_id"]) %> <!-- Fixed the syntax error -->
+    <% if book %>
+      <p>Book Title: <%= book.title %> 
+      - Quantity: <%= item["quantity"] %> 
+      - Price: <%= number_to_currency(item["price"]) %></p>
+    <% end %>
+  <% end %>
+
+  <!-- Display total price including taxes -->
+  <h3>Total Price (including taxes): <%= number_to_currency(@total_price) %></h3>
+  
+  <h3>Enter your credit card details</h3>
+
+  <%= form_with url: process_checkout_path, method: :post, local: true do |form| %>
+    
+    <!-- Credit Card Number Field -->
+    <div class="mb-3">
+      <%= form.label :card_number, "Card Number", class: "form-label" %>
+      <%= form.text_field :card_number, class: "form-control", placeholder: "1234 5678 9101 1121", required: true %>
+    </div>
+
+    <!-- Expiry Date Field -->
+    <div class="mb-3">
+      <%= form.label :expiry_date, "Expiry Date", class: "form-label" %>
+      <%= form.text_field :expiry_date, class: "form-control", placeholder: "MM/YY", required: true %>
+    </div>
+
+    <!-- CVV Field -->
+    <div class="mb-3">
+      <%= form.label :cvv, "CVV", class: "form-label" %>
+      <%= form.text_field :cvv, class: "form-control", placeholder: "123", required: true %>
+    </div>
+    
+    <!-- Address Fields -->
+    <div class="mb-3">
+      <%= form.label :line1, "Address Line 1", class: "form-label" %>
+      <%= form.text_field "address[line1]", class: "form-control", required: true %> <!-- Removed Address Line 2 -->
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :city, "City", class: "form-label" %>
+      <%= form.text_field "address[city]", class: "form-control", required: true %> <!-- Address city -->
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :postal_code, "Postal Code", class: "form-label" %>
+      <%= form.text_field "address[postal_code]", class: "form-control", required: true %> <!-- Postal code -->
+    </div>
+
+    <!-- Submit Button -->
+    <div class="mb-3">
+      <%= form.submit "Place Order", class: "btn btn-success" %>
+    </div>
+
+  <% end %>
+</div>

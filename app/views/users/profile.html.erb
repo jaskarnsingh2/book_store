@@ -1,0 +1,40 @@
+<h1>Your Profile</h1>
+
+<!-- User Details -->
+<p><strong>Name:</strong> <%= @user.name.presence || "Name not provided" %></p>
+<p><strong>Email:</strong> <%= @user.email %></p>
+
+<!-- Address -->
+<% if @user.address %>
+  <h2>Address</h2>
+  <p><strong>Street:</strong> <%= @user.address.line1 %></p>
+  <% if @user.address.line2.present? %>
+    <p><strong>Street Line 2:</strong> <%= @user.address.line2 %></p>
+  <% end %>
+  <p><strong>City:</strong> <%= @user.address.city %></p>
+  <p><strong>Province:</strong> <%= @user.address.province.name %></p>
+  <p><strong>Postal Code:</strong> <%= @user.address.postal_code %></p>
+<% else %>
+  <p><strong>Address:</strong> No address provided.</p>
+<% end %>
+
+<!-- Past Orders -->
+<h2>Past Orders</h2>
+<% if @orders.any? %>
+  <% @orders.each do |order| %>
+    <div>
+      <h3>Order ID: <%= order.id %></h3>
+      <ul>
+        <% order.order_items.each do |item| %>
+          <li>
+            <%= item.product.name %> - Quantity: <%= item.quantity %>
+          </li>
+        <% end %>
+      </ul>
+      <p><strong>Taxes:</strong> <%= number_to_currency(order.tax_total) %></p>
+      <p><strong>Grand Total:</strong> <%= number_to_currency(order.grand_total) %></p>
+    </div>
+  <% end %>
+<% else %>
+  <p>No orders placed yet.</p>
+<% end %>

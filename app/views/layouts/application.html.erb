@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Book Heaven" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag 'home', media: 'all', 'data-turbo-track': 'reload' %>
+    <%= stylesheet_link_tag 'books', media: 'all', 'data-turbo-track': 'reload' %>
+
+  </head>
+  <body>
+    <!-- Flash Messages -->
+    <% if flash[:notice] %>
+      <div class="alert alert-success">
+        <%= flash[:notice] %>
+      </div>
+    <% end %>
+
+    <% if flash[:alert] %>
+      <div class="alert alert-danger">
+        <%= flash[:alert] %>
+      </div>
+    <% end %>
+
+    <%= yield %> <!-- Page-Specific Content -->
+  </body>
+</html>

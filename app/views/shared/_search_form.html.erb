@@ -1,0 +1,17 @@
+<div class="mb-4">
+  <%= form_with url: shop_path, method: :get, local: true do |form| %>
+    <div class="row">
+      <div class="col-md-6">
+        <%= form.label :query, "Search by Title or Description", class: "form-label" %>
+        <%= form.text_field :query, value: params[:query], class: "form-control" %>
+      </div>
+      <div class="col-md-4">
+        <%= form.label :category, "Filter by Category", class: "form-label" %>
+        <%= form.select :category, options_for_select(Book.pluck(:genre).uniq, params[:category]), include_blank: "All Categories", class: "form-select" %>
+      </div>
+      <div class="col-md-2 mt-4">
+        <%= form.submit "Search", class: "btn btn-primary mt-2" %>
+      </div>
+    </div>
+  <% end %>
+</div>

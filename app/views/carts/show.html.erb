@@ -1,0 +1,42 @@
+<div class="container">
+  <h1 class="text-center my-4">Your Cart</h1>
+  <% if @cart_items.any? %>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Price</th>
+          <th>Quantity</th>
+          <th>Total</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @cart_items.each do |item| %>
+          <tr>
+            <td><%= item[:title] %></td>
+            <td><%= item[:author_name] %></td>
+            <td>$<%= "%.2f" % item[:price] %></td>
+            <td>
+              <%= form_with url: update_cart_path, method: :patch, local: true do %>
+                <%= hidden_field_tag :book_id, item[:id] %>
+                <%= number_field_tag :quantity, item[:quantity], min: 0, class: "form-control" %>
+                <%= submit_tag "Update", class: "btn btn-primary btn-sm mt-1" %>
+              <% end %>
+            </td>
+            <td>$<%= "%.2f" % item[:total_price] %></td>
+            <td>
+              <%= button_to "Remove", remove_from_cart_path(book_id: item[:id]), method: :delete, class: "btn btn-danger btn-sm" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <div class="text-end mt-4">
+      <%= link_to "Proceed to Checkout", checkout_path, class: "btn btn-success" %>
+    </div>
+  <% else %>
+    <p class="text-center">Your cart is empty.</p>
+  <% end %>
+</div>

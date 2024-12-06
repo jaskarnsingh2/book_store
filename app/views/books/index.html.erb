@@ -1,0 +1,25 @@
+<%= render 'shared/search_form' %>
+<div class="container my-5">
+  <h1 class="text-center mb-4">Our Collection</h1>
+  <div class="row">
+    <% if @books.any? %>
+      <% @books.each do |book| %>
+        <div class="col-md-3 mb-4">
+          <div class="card h-100">
+            <img src="<%= asset_path('book_cover.jpg') %>" class="card-img-top" alt="<%= book.title %>">
+            <div class="card-body">
+              <h5 class="card-title"><%= book.title %></h5>
+              <p class="card-text">Author: <%= book.author.name %></p>
+              <p class="card-text">Genre: <%= book.genre %></p>
+              <%= button_to 'Add to Cart', add_to_cart_path(book_id: book.id), method: :post, class: "btn btn-primary w-100" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="col-12 text-center">
+        <p>No books found matching your search criteria.</p>
+      </div>
+    <% end %>
+  </div>
+</div>
